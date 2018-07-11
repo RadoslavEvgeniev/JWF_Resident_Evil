@@ -53,6 +53,13 @@ public class VirusController extends BaseController {
         return super.redirect("/");
     }
 
+    @GetMapping("")
+    public ModelAndView showViruses(ModelAndView modelAndView) {
+        modelAndView.addObject("viruses", this.virusService.extractAllViruses());
+
+        return super.view("viruses/show-viruses", modelAndView);
+    }
+
     private void addObjectsInModelAndView(ModelAndView modelAndView) {
         modelAndView.addObject("mutations", Mutation.values());
         modelAndView.addObject("magnitudes", Magnitude.values());

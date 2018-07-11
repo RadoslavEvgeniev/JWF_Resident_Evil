@@ -10,7 +10,9 @@ import residentevil.entities.Virus;
 import residentevil.repositories.CapitalRepository;
 import residentevil.repositories.VirusRepository;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -34,6 +36,20 @@ public class VirusServiceImpl implements VirusService {
         Virus virus = this.modelMapper.map(virusDto, Virus.class);
 
         this.virusRepository.save(virus);
+    }
+
+    @Override
+    public List<VirusDto> extractAllViruses() {
+        List<Virus> virusesFromDb = this.virusRepository.findAll();
+        List<VirusDto> virusDtos = new ArrayList<>();
+
+        for (Virus virus : virusesFromDb) {
+            VirusDto virusDto = this.modelMapper.map(virus, VirusDto.class);
+
+            virusDtos.add(virusDto);
+        }
+
+        return virusDtos;
     }
 
     private void addCapitalDtosToVirusDto(VirusDto virusDto) {
