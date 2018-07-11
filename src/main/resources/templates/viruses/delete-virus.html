@@ -10,8 +10,9 @@
     <div class="jumbotron col-sm-11 m-auto">
         <h1>Delete Virus!</h1>
         <hr/>
-        <form th:action="@{/viruses/delete/{id}(id=${virusDto.id})}" method="post"></form>
-        <th:block th:include="~{fragments/virus-form}"></th:block>
+        <form th:action="@{/viruses/delete/{id}(id=${virusDto.id})}" method="post">
+            <th:block th:include="~{fragments/virus-form}"></th:block>
+        </form>
     </div>
     <script>
         $("#virus-form :input").prop("disabled", true);
