@@ -11,6 +11,7 @@ import java.util.Set;
 @Entity
 @Table(name = "viruses")
 public class Virus {
+
     private String id;
     private String name;
     private String description;
@@ -95,6 +96,7 @@ public class Virus {
     }
 
     @Column(name = "mutation", nullable = false)
+    @Enumerated()
     public Mutation getMutation() {
         return this.mutation;
     }
@@ -112,7 +114,7 @@ public class Virus {
         this.turnoverRate = turnoverRate;
     }
 
-    @Column(name = "hours_until_turn")
+    @Column(name = "hours_until_turn", nullable = false)
     public Integer getHoursUntilTurn() {
         return this.hoursUntilTurn;
     }
@@ -122,6 +124,7 @@ public class Virus {
     }
 
     @Column(name = "magnitude", nullable = false)
+    @Enumerated()
     public Magnitude getMagnitude() {
         return this.magnitude;
     }
@@ -130,7 +133,7 @@ public class Virus {
         this.magnitude = magnitude;
     }
 
-    @Column(name = "released_on")
+    @Column(name = "released_on", nullable = false)
     public LocalDate getReleasedOn() {
         return this.releasedOn;
     }

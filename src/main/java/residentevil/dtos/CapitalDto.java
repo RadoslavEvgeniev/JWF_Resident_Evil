@@ -1,22 +1,15 @@
-package residentevil.entities;
+package residentevil.dtos;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "capitals")
-public class Capital {
+public class CapitalDto {
 
     private Long id;
     private String name;
     private Double latitude;
     private Double longitude;
 
-    public Capital() {
+    public CapitalDto() {
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, unique = true)
     public Long getId() {
         return this.id;
     }
@@ -25,7 +18,6 @@ public class Capital {
         this.id = id;
     }
 
-    @Column(name = "name", nullable = false)
     public String getName() {
         return this.name;
     }
@@ -34,7 +26,6 @@ public class Capital {
         this.name = name;
     }
 
-    @Column(name = "latitude", nullable = false)
     public Double getLatitude() {
         return this.latitude;
     }
@@ -43,7 +34,6 @@ public class Capital {
         this.latitude = latitude;
     }
 
-    @Column(name = "longitude", nullable = false)
     public Double getLongitude() {
         return this.longitude;
     }
