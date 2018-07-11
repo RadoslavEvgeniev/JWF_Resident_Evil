@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import residentevil.entities.Virus;
 
 @Repository
-public interface VirusRepository extends JpaRepository<Virus, Long> {
+public interface VirusRepository extends JpaRepository<Virus, String> {
 
 
 }

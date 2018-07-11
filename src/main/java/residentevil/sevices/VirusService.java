@@ -9,4 +9,8 @@ public interface VirusService {
     void importVirus(VirusDto virusDto);
 
     List<VirusDto> extractAllViruses();
+
+    VirusDto extractVirusById(String id);
+
+    void removeVirusById(String id);
 }

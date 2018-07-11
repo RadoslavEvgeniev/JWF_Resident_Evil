@@ -3,10 +3,7 @@ package residentevil.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import residentevil.dtos.CapitalDto;
 import residentevil.dtos.VirusDto;
@@ -35,12 +32,13 @@ public class VirusController extends BaseController {
     @GetMapping("/add")
     public ModelAndView addVirus(@ModelAttribute("virusDto") VirusDto virusDto, ModelAndView modelAndView) {
         modelAndView.addObject("virusDto", virusDto);
+        modelAndView.addObject("releasedOnDate", virusDto.getReleasedOn());
         this.addObjectsInModelAndView(modelAndView);
 
         return super.view("viruses/add-virus", modelAndView);
     }
 
-    @PostMapping("add")
+    @PostMapping("/add")
     public ModelAndView addVirusConfirm(@Valid @ModelAttribute("virusDto") VirusDto virusDto, BindingResult bindingResult, ModelAndView modelAndView) {
         if (bindingResult.hasErrors()) {
             this.addObjectsInModelAndView(modelAndView);
@@ -58,6 +56,22 @@ public class VirusController extends BaseController {
         modelAndView.addObject("viruses", this.virusService.extractAllViruses());
 
         return super.view("viruses/show-viruses", modelAndView);
+    }
+
+    @GetMapping("/delete/{id}")
+    public ModelAndView deleteVirus(@PathVariable("id") String id, ModelAndView modelAndView) {
+        VirusDto virusDto = this.virusService.extractVirusById(id);
+        modelAndView.addObject("virusDto", virusDto);
+        this.addObjectsInModelAndView(modelAndView);
+
+        return super.view("viruses/delete-virus", modelAndView);
+    }
+
+    @PostMapping("/delete/{id}")
+    public ModelAndView deleteVirusConfirm(@PathVariable("id") String id) {
+        this.virusService.removeVirusById(id);
+
+        return super.redirect("/viruses");
     }
 
     private void addObjectsInModelAndView(ModelAndView modelAndView) {

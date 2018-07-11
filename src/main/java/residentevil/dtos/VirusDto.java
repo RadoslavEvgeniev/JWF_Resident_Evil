@@ -137,7 +137,6 @@ public class VirusDto {
         this.magnitude = magnitude;
     }
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @DateBeforeToday(message = "Invalid Date")
     public LocalDate getReleasedOn() {
         return this.releasedOn;

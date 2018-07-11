@@ -52,6 +52,23 @@ public class VirusServiceImpl implements VirusService {
         return virusDtos;
     }
 
+    @Override
+    public VirusDto extractVirusById(String id) {
+        Virus virusFromDb = this.virusRepository.findById(id).orElse(null);
+        if (virusFromDb == null) {
+            throw new IllegalArgumentException("Invalid id");
+        }
+
+        VirusDto virusDto = this.modelMapper.map(virusFromDb, VirusDto.class);
+
+        return virusDto;
+    }
+
+    @Override
+    public void removeVirusById(String id) {
+        this.virusRepository.deleteById(id);
+    }
+
     private void addCapitalDtosToVirusDto(VirusDto virusDto) {
         Set<CapitalDto> capitalDtos = new LinkedHashSet<>();
         for (Long capitalId : virusDto.getCapitalIds()) {
