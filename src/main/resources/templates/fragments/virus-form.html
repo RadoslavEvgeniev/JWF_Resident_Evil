@@ -75,13 +75,6 @@
                    th:styleappend="${#fields.hasErrors('releasedOn')} ? 'border-color: red'" th:value="*{releasedOn}" name="releasedOn">
             <small style="color: red" th:each="error : ${#fields.errors('releasedOn')}" th:text="${error}"></small>
         </div>
-        <!--<div class="form-group">-->
-        <!--<label for="virus-release-date">Release Date</label>-->
-        <!--<input type="text" id="virus-release-date" class="form-control" th:field="*{releasedOn}"-->
-        <!--th:styleappend="${#fields.hasErrors('releasedOn')} ? 'border-color: red'"-->
-        <!--placeholder="Format: yyyy-dd-MM">-->
-        <!--<small style="color: red" th:each="error : ${#fields.errors('releasedOn')}" th:text="${error}"></small>-->
-        <!--</div>-->
         <div class="form-group">
             <label for="virus-capitals">Affected Capitals</label>
             <select class="custom-select" id="virus-capitals" multiple="multiple" th:field="*{capitalIds}"
