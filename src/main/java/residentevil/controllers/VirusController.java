@@ -13,7 +13,9 @@ import residentevil.sevices.CapitalService;
 import residentevil.sevices.VirusService;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
@@ -61,6 +63,8 @@ public class VirusController extends BaseController {
     @GetMapping("/delete/{id}")
     public ModelAndView deleteVirus(@PathVariable("id") String id, ModelAndView modelAndView) {
         VirusDto virusDto = this.virusService.extractVirusById(id);
+        List<Long> capitalIds = virusDto.getCapitals().stream().map(CapitalDto::getId).collect(Collectors.toList());
+        virusDto.setCapitalIds(capitalIds);
         modelAndView.addObject("virusDto", virusDto);
         this.addObjectsInModelAndView(modelAndView);
 
@@ -72,6 +76,30 @@ public class VirusController extends BaseController {
         this.virusService.removeVirusById(id);
 
         return super.redirect("/viruses");
+    }
+
+    @GetMapping("/edit/{id}")
+    public ModelAndView editVirus(@PathVariable("id") String id, ModelAndView modelAndView) {
+        VirusDto virusDto = this.virusService.extractVirusById(id);
+        List<Long> capitalIds = virusDto.getCapitals().stream().map(CapitalDto::getId).collect(Collectors.toList());
+        virusDto.setCapitalIds(capitalIds);
+        modelAndView.addObject("virusDto", virusDto);
+        this.addObjectsInModelAndView(modelAndView);
+
+        return super.view("viruses/edit-virus", modelAndView);
+    }
+
+    @PostMapping("/edit/{id}")
+    public ModelAndView editVirusConfirm(@PathVariable("id") String id, @Valid @ModelAttribute("virusDto") VirusDto virusDto, BindingResult bindingResult, ModelAndView modelAndView) {
+        if (bindingResult.hasErrors()) {
+            this.addObjectsInModelAndView(modelAndView);
+
+            return super.view("viruses/edit-virus", modelAndView);
+        }
+
+        this.virusService.importVirus(virusDto);
+
+        return super.redirect("/");
     }
 
     private void addObjectsInModelAndView(ModelAndView modelAndView) {

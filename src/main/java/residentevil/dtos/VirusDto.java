@@ -144,13 +144,6 @@ public class VirusDto {
     }
 
     public void setReleasedOn(LocalDate releasedOn) {
-//        try {
-//            String[] dateParams = releasedOn.split("-");
-//            LocalDate date = LocalDate.of(Integer.parseInt(dateParams[0]), Integer.parseInt(dateParams[1]), Integer.parseInt(dateParams[2]));
-//            this.releasedOn = date;
-//        } catch (NumberFormatException nfe) {
-//            this.releasedOn = null;
-//        }
         this.releasedOn = releasedOn;
     }
 
