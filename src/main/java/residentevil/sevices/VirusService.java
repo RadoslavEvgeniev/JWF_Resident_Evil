@@ -13,4 +13,6 @@ public interface VirusService {
     VirusDto extractVirusById(String id);
 
     void removeVirusById(String id);
+
+    String extractVirusesAsJson();
 }

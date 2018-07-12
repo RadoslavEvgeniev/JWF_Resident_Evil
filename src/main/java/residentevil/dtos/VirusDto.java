@@ -1,5 +1,6 @@
 package residentevil.dtos;
 
+import com.google.gson.annotations.Expose;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 import residentevil.common.annotations.DateBeforeToday;
@@ -13,18 +14,31 @@ import java.util.Set;
 
 public class VirusDto {
 
+    @Expose
     private String id;
+    @Expose
     private String name;
+    @Expose
     private String description;
+    @Expose
     private String sideEffects;
+    @Expose
     private String creator;
+    @Expose
     private boolean isDeadly;
+    @Expose
     private boolean isCurable;
+    @Expose
     private Mutation mutation;
+    @Expose
     private Integer turnoverRate;
+    @Expose
     private Integer hoursUntilTurn;
+    @Expose
     private Magnitude magnitude;
+    @Expose
     private LocalDate releasedOn;
+    @Expose
     private Set<CapitalDto> capitals;
 
     private List<Long> capitalIds;

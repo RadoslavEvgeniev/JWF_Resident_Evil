@@ -1,5 +1,7 @@
 package residentevil.sevices;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,12 +23,14 @@ public class VirusServiceImpl implements VirusService {
     private VirusRepository virusRepository;
     private CapitalRepository capitalRepository;
     private ModelMapper modelMapper;
+    private Gson gson;
 
     @Autowired
-    public VirusServiceImpl(VirusRepository virusRepository, CapitalRepository capitalRepository, ModelMapper modelMapper) {
+    public VirusServiceImpl(VirusRepository virusRepository, CapitalRepository capitalRepository, ModelMapper modelMapper, Gson gson) {
         this.virusRepository = virusRepository;
         this.capitalRepository = capitalRepository;
         this.modelMapper = modelMapper;
+        this.gson = gson;
     }
 
     @Override
@@ -67,6 +71,14 @@ public class VirusServiceImpl implements VirusService {
     @Override
     public void removeVirusById(String id) {
         this.virusRepository.deleteById(id);
+    }
+
+    @Override
+    public String extractVirusesAsJson() {
+        List<Virus> virusesFromDb  = this.virusRepository.findAll();
+        String geoJson = this.gson.toJson(virusesFromDb);
+
+        return geoJson;
     }
 
     private void addCapitalDtosToVirusDto(VirusDto virusDto) {
