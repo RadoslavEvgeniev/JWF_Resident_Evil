@@ -70,9 +70,10 @@
             </select>
         </div>
         <div class="form-group">
-        <label for="virus-release-date">Release Date</label>
-        <input type="date" id="virus-release-date" class="form-control" th:field="*{releasedOn}" th:styleappend="${#fields.hasErrors('releasedOn')} ? 'border-color: red'">
-        <small style="color: red" th:each="error : ${#fields.errors('releasedOn')}" th:text="${error}"></small>
+            <label for="virus-release-date">Release Date</label>
+            <input type="date" id="virus-release-date" class="form-control" th:field="*{releasedOn}"
+                   th:styleappend="${#fields.hasErrors('releasedOn')} ? 'border-color: red'" th:value="*{releasedOn}" name="releasedOn">
+            <small style="color: red" th:each="error : ${#fields.errors('releasedOn')}" th:text="${error}"></small>
         </div>
         <!--<div class="form-group">-->
         <!--<label for="virus-release-date">Release Date</label>-->
