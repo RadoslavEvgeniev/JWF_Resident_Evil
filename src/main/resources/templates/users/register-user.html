@@ -1,0 +1,22 @@
+<th:block th:include="~{fragments/navbar-guest}"></th:block>
+<div class="jumbotron col-sm-11 m-auto">
+    <form method="post" th:action="@{/register}">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username" placeholder="Username..." required name="username">
+        </div>
+        <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" class="form-control" id="email" placeholder="Email..." required name="email">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Password..." required name="password">
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password..." required name="confirmPassword">
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+</div>

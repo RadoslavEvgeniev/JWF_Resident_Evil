@@ -5,8 +5,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class BaseController {
 
     protected ModelAndView view(String view, ModelAndView modelAndView) {
-        modelAndView.setViewName(view);
-
+        modelAndView.setViewName("fragments/layout");
+        modelAndView.addObject("view", view);
         return modelAndView;
     }
 

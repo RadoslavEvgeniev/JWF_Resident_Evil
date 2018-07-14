@@ -1,23 +1,12 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <th:block th:include="~{fragments/head}"></th:block>
-    <link rel="stylesheet" href="../bootstrap.min.css">
-    <link rel="stylesheet" href="../style.css">
-</head>
-<body>
-    <th:block th:include="~{fragments/navbar}"></th:block>
-    <div class="jumbotron col-sm-11 m-auto">
-        <h1>Spread a New Virus!</h1>
-        <hr/>
-        <form th:action="@{/viruses/add}" method="post" th:object="${virusDto}">
-            <th:block th:include="~{fragments/virus-form}"></th:block>
-        </form>
-
-    </div>
+<th:block th:include="~{fragments/navbar-admin}"></th:block>
+<div class="jumbotron col-sm-11 m-auto">
+    <h1>Spread a New Virus!</h1>
+    <hr/>
+    <form th:action="@{/viruses/add}" method="post" th:object="${virusDto}">
+        <th:block th:include="~{fragments/virus-form}"></th:block>
+    </form>
     <script>
         $("#submitButton").text("Spread!");
         $("#submitButton").addClass("btn btn-success");
     </script>
-</body>
-</html>
+</div>
