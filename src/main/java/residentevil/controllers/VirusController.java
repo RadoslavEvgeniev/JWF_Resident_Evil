@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import residentevil.common.annotations.PreAuthenticate;
 import residentevil.dtos.CapitalDto;
 import residentevil.dtos.VirusDto;
 import residentevil.entities.enums.Magnitude;
@@ -13,7 +14,6 @@ import residentevil.sevices.CapitalService;
 import residentevil.sevices.VirusService;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +32,7 @@ public class VirusController extends BaseController {
     }
 
     @GetMapping("/add")
+    @PreAuthenticate(loggedIn = true, inRole = "ADMIN")
     public ModelAndView addVirus(@ModelAttribute("virusDto") VirusDto virusDto, ModelAndView modelAndView) {
         modelAndView.addObject("virusDto", virusDto);
         modelAndView.addObject("releasedOnDate", virusDto.getReleasedOn());
@@ -41,6 +42,7 @@ public class VirusController extends BaseController {
     }
 
     @PostMapping("/add")
+    @PreAuthenticate(loggedIn = true, inRole = "ADMIN")
     public ModelAndView addVirusConfirm(@Valid @ModelAttribute("virusDto") VirusDto virusDto, BindingResult bindingResult, ModelAndView modelAndView) {
         if (bindingResult.hasErrors()) {
             this.addObjectsInModelAndView(modelAndView);
@@ -61,6 +63,7 @@ public class VirusController extends BaseController {
     }
 
     @GetMapping("/delete/{id}")
+    @PreAuthenticate(loggedIn = true, inRole = "ADMIN")
     public ModelAndView deleteVirus(@PathVariable("id") String id, ModelAndView modelAndView) {
         VirusDto virusDto = this.virusService.extractVirusById(id);
         List<Long> capitalIds = virusDto.getCapitals().stream().map(CapitalDto::getId).collect(Collectors.toList());
@@ -72,6 +75,7 @@ public class VirusController extends BaseController {
     }
 
     @PostMapping("/delete/{id}")
+    @PreAuthenticate(loggedIn = true, inRole = "ADMIN")
     public ModelAndView deleteVirusConfirm(@PathVariable("id") String id) {
         this.virusService.removeVirusById(id);
 
@@ -79,6 +83,7 @@ public class VirusController extends BaseController {
     }
 
     @GetMapping("/edit/{id}")
+    @PreAuthenticate(loggedIn = true, inRole = "ADMIN")
     public ModelAndView editVirus(@PathVariable("id") String id, ModelAndView modelAndView) {
         VirusDto virusDto = this.virusService.extractVirusById(id);
         List<Long> capitalIds = virusDto.getCapitals().stream().map(CapitalDto::getId).collect(Collectors.toList());
@@ -90,6 +95,7 @@ public class VirusController extends BaseController {
     }
 
     @PostMapping("/edit/{id}")
+    @PreAuthenticate(loggedIn = true, inRole = "ADMIN")
     public ModelAndView editVirusConfirm(@PathVariable("id") String id, @Valid @ModelAttribute("virusDto") VirusDto virusDto, BindingResult bindingResult, ModelAndView modelAndView) {
         if (bindingResult.hasErrors()) {
             this.addObjectsInModelAndView(modelAndView);
