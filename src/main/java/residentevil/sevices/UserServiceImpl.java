@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import residentevil.entities.User;
 import residentevil.entities.UserRole;
+import residentevil.models.binding.UserEditBindingModel;
 import residentevil.models.binding.UserLoginBindingModel;
 import residentevil.models.binding.UserRegisterBindingModel;
 import residentevil.models.view.UserViewModel;
@@ -93,6 +94,44 @@ public class UserServiceImpl implements UserService {
         }
 
         return userViewModels;
+    }
+
+    @Override
+    public UserEditBindingModel extractUserForEditById(String id) {
+        User userFromDb = this.userRepository.findById(id).orElse(null);
+
+        if (userFromDb == null) {
+            throw new IllegalArgumentException("Non-existent user.");
+        }
+
+        UserEditBindingModel userBindingModel = this.modelMapper.map(userFromDb, UserEditBindingModel.class);
+
+        for (UserRole userRole : userFromDb.getAuthorities()) {
+            userBindingModel.getRoleAuthorities().add(userRole.getAuthority());
+        }
+
+        return userBindingModel;
+    }
+
+    @Override
+    public boolean insertEditedUser(UserEditBindingModel userEditBindingModel) {
+        User user = this.userRepository.findByUsername(userEditBindingModel.getUsername());
+        user.getAuthorities().clear();
+
+        if (userEditBindingModel.getRoleAuthorities().contains("ADMIN")) {
+            user.getAuthorities().add(this.roleRepository.findByAuthority("USER"));
+            user.getAuthorities().add(this.roleRepository.findByAuthority("MODERATOR"));
+            user.getAuthorities().add(this.roleRepository.findByAuthority("ADMIN"));
+        } else if (userEditBindingModel.getRoleAuthorities().contains("MODERATOR")) {
+            user.getAuthorities().add(this.roleRepository.findByAuthority("USER"));
+            user.getAuthorities().add(this.roleRepository.findByAuthority("MODERATOR"));
+        } else {
+            user.getAuthorities().add(this.roleRepository.findByAuthority("USER"));
+        }
+
+        this.userRepository.save(user);
+
+        return true;
     }
 
     private void insertUserRoles() {
