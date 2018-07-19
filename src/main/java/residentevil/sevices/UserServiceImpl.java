@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService {
         this.insertUserRoles();
 
         if (this.userRepository.count() == 0) {
+            user.getAuthorities().add(this.roleRepository.findByAuthority("ROOT"));
             user.getAuthorities().add(this.roleRepository.findByAuthority("ADMIN"));
             user.getAuthorities().add(this.roleRepository.findByAuthority("MODERATOR"));
             user.getAuthorities().add(this.roleRepository.findByAuthority("USER"));
@@ -136,6 +137,8 @@ public class UserServiceImpl implements UserService {
 
     private void insertUserRoles() {
         if (this.roleRepository.count() == 0) {
+            UserRole root = new UserRole();
+            root.setAuthority("ROOT");
             UserRole admin = new UserRole();
             admin.setAuthority("ADMIN");
             UserRole moderator = new UserRole();
@@ -143,6 +146,7 @@ public class UserServiceImpl implements UserService {
             UserRole user = new UserRole();
             user.setAuthority("USER");
 
+            this.roleRepository.save(root);
             this.roleRepository.save(admin);
             this.roleRepository.save(moderator);
             this.roleRepository.save(user);

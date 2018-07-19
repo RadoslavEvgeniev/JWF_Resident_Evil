@@ -40,8 +40,14 @@ public class AdminController extends BaseController {
     }
 
     @GetMapping("/users/edit/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ModelAndView editUser(@PathVariable("id") String id, ModelAndView modelAndView) {
         UserEditBindingModel userBindingModel = this.userService.extractUserForEditById(id);
+
+        if (userBindingModel.getRoleAuthorities().contains("ROOT")) {
+            return super.redirect("/users");
+        }
+
         modelAndView.addObject("editBindingModel", userBindingModel);
         modelAndView.addObject("roles", this.roleService.extractAllRoles());
 
@@ -49,6 +55,7 @@ public class AdminController extends BaseController {
     }
 
     @PostMapping("/users/edit/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ModelAndView editUserConfirm(@PathVariable("id") String id,
                                         @Valid @ModelAttribute("editBindingModel") UserEditBindingModel userEditBindingModel,
                                         BindingResult bindingResult, ModelAndView modelAndView) {
