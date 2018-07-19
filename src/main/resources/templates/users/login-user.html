@@ -1,4 +1,4 @@
-<th:block th:include="~{fragments/navbar-guest}"></th:block>
+<th:block th:include="~{fragments/navbar}"></th:block>
 <div class="jumbotron col-sm-11 m-auto">
     <form method="post" th:action="@{/login}">
         <div class="form-group">
@@ -9,6 +9,11 @@
             <label for="password">Password</label>
             <input type="password" class="form-control" id="password" placeholder="Password..." required name="password">
         </div>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe">
+            <label class="form-check-label" for="rememberMe">Remember Me</label>
+        </div>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
         <button type="submit" class="btn btn-primary">Login</button>
     </form>
 </div>

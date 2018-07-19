@@ -1,4 +1,4 @@
-<th:block th:include="~{fragments/navbar-user}"></th:block>
+<th:block th:include="~{fragments/navbar}"></th:block>
 <div class="jumbotron col-sm-11 m-auto">
     <h1>All Viruses!</h1>
     <hr/>
@@ -18,9 +18,11 @@
                 <td scope="col" th:text="${virus.name}"></td>
                 <td scope="col" th:text="${virus.magnitude}"></td>
                 <td scope="col" th:text="${#temporals.format(virus.releasedOn, 'dd-MMM-yyyy')}"></td>
-                <td scope="col"><a class="btn btn-info" th:href="@{/viruses/edit/{id}(id=${virus.id})}" th:text="Edit"></a>
+                <td scope="col"><a sec:authorize="hasAuthority('MODERATOR')" class="btn btn-info"
+                                   th:href="@{/viruses/edit/{id}(id=${virus.id})}" th:text="Edit"></a>
                 </td>
-                <td scope="col"><a class="btn btn-danger" th:href="@{/viruses/delete/{id}(id=${virus.id})}"
+                <td scope="col"><a sec:authorize="hasAuthority('MODERATOR')" class="btn btn-danger"
+                                   th:href="@{/viruses/delete/{id}(id=${virus.id})}"
                                    th:text="Delete"></a></td>
             </tr>
         </th:block>

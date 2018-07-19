@@ -1,16 +1,17 @@
 package residentevil.sevices;
 
-import residentevil.dtos.VirusDto;
+import residentevil.models.binding.VirusBindingModel;
+import residentevil.models.view.VirusViewModel;
 
 import java.util.List;
 
 public interface VirusService {
 
-    void importVirus(VirusDto virusDto);
+    void importVirus(VirusBindingModel virusBindingModel);
 
-    List<VirusDto> extractAllViruses();
+    List<VirusViewModel> extractAllViruses();
 
-    VirusDto extractVirusById(String id);
+    VirusBindingModel extractVirusByIdForEditOrDelete(String id);
 
     void removeVirusById(String id);
 

@@ -1,10 +1,10 @@
 package residentevil.sevices;
 
-import residentevil.dtos.CapitalDto;
+import residentevil.models.view.CapitalViewModel;
 
 import java.util.List;
 
 public interface CapitalService {
 
-    List<CapitalDto> extractAllCapitals();
+    List<CapitalViewModel> extractAllCapitals();
 }

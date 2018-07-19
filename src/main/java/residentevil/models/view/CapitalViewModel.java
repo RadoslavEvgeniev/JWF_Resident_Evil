@@ -1,21 +1,13 @@
-package residentevil.dtos;
+package residentevil.models.view;
 
-import com.google.gson.annotations.Expose;
+public class CapitalViewModel {
 
-import java.io.Serializable;
-
-public class CapitalDto {
-
-    @Expose
     private Long id;
-    @Expose
     private String name;
-    @Expose
     private Double latitude;
-    @Expose
     private Double longitude;
 
-    public CapitalDto() {
+    public CapitalViewModel() {
     }
 
     public Long getId() {

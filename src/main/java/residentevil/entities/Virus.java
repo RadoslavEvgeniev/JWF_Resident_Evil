@@ -6,6 +6,7 @@ import residentevil.entities.enums.Mutation;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -27,6 +28,7 @@ public class Virus {
     private Set<Capital> capitals;
 
     public Virus() {
+        this.capitals = new LinkedHashSet<>();
     }
 
     @Id
@@ -96,7 +98,7 @@ public class Virus {
     }
 
     @Column(name = "mutation", nullable = false)
-    @Enumerated()
+    @Enumerated(EnumType.STRING)
     public Mutation getMutation() {
         return this.mutation;
     }
@@ -124,7 +126,7 @@ public class Virus {
     }
 
     @Column(name = "magnitude", nullable = false)
-    @Enumerated()
+    @Enumerated(EnumType.STRING)
     public Magnitude getMagnitude() {
         return this.magnitude;
     }

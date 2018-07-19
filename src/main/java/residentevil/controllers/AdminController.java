@@ -1,25 +1,32 @@
 package residentevil.controllers;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import residentevil.common.annotations.PreAuthenticate;
-import residentevil.entities.enums.UserRole;
+import residentevil.models.view.UserViewModel;
+import residentevil.sevices.UserService;
 
-import javax.servlet.http.HttpSession;
+import java.security.Principal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/admin")
 public class AdminController extends BaseController {
 
-    @GetMapping("/home")
-    @PreAuthenticate(loggedIn = true, inRole = "ADMIN")
-    public ModelAndView home(HttpSession session) {
-        if (session.getAttribute("user-role") == UserRole.USER) {
-            return this.redirect("/home");
-        }
+    private UserService userService;
 
-        return super.view("users/home-admin");
+    public AdminController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/users")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ModelAndView listUsers(Principal principal, ModelAndView modelAndView) {
+        List<UserViewModel> userViewModels = this.userService.extractAllUsers()
+                .stream().filter(u -> !u.getUsername().equals(principal.getName())).collect(Collectors.toList());
+        modelAndView.addObject("users", userViewModels);
+
+        return super.view("users/show-users", modelAndView);
     }
 }

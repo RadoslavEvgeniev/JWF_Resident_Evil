@@ -1,12 +1,17 @@
 package residentevil.sevices;
 
-import residentevil.dtos.UserDto;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import residentevil.models.binding.UserLoginBindingModel;
+import residentevil.models.binding.UserRegisterBindingModel;
+import residentevil.models.view.UserViewModel;
 
-public interface UserService {
+import java.util.List;
 
-    boolean registerUser(UserDto userDto);
+public interface UserService extends UserDetailsService {
 
-    boolean loginUser(UserDto userDto);
+    boolean registerUser(UserRegisterBindingModel userRegisterBindingModel);
 
-    UserDto getUserByUsername(String username);
+    boolean loginUser(UserLoginBindingModel userLoginBindingModel);
+
+    List<UserViewModel> extractAllUsers();
 }

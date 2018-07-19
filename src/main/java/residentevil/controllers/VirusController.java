@@ -1,21 +1,20 @@
 package residentevil.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import residentevil.common.annotations.PreAuthenticate;
-import residentevil.dtos.CapitalDto;
-import residentevil.dtos.VirusDto;
 import residentevil.entities.enums.Magnitude;
 import residentevil.entities.enums.Mutation;
+import residentevil.models.binding.VirusBindingModel;
+import residentevil.models.view.CapitalViewModel;
 import residentevil.sevices.CapitalService;
 import residentevil.sevices.VirusService;
 
 import javax.validation.Valid;
 import java.util.Comparator;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
@@ -32,30 +31,32 @@ public class VirusController extends BaseController {
     }
 
     @GetMapping("/add")
-    @PreAuthenticate(loggedIn = true, inRole = "ADMIN")
-    public ModelAndView addVirus(@ModelAttribute("virusDto") VirusDto virusDto, ModelAndView modelAndView) {
-        modelAndView.addObject("virusDto", virusDto);
-        modelAndView.addObject("releasedOnDate", virusDto.getReleasedOn());
+    @PreAuthorize("hasAuthority('MODERATOR')")
+    public ModelAndView addVirus(@ModelAttribute("virusBindingModel") VirusBindingModel virusBindingModel, ModelAndView modelAndView) {
+        modelAndView.addObject("virusBindingModel", virusBindingModel);
+
         this.addObjectsInModelAndView(modelAndView);
 
         return super.view("viruses/add-virus", modelAndView);
     }
 
     @PostMapping("/add")
-    @PreAuthenticate(loggedIn = true, inRole = "ADMIN")
-    public ModelAndView addVirusConfirm(@Valid @ModelAttribute("virusDto") VirusDto virusDto, BindingResult bindingResult, ModelAndView modelAndView) {
+    @PreAuthorize("hasAuthority('MODERATOR')")
+    public ModelAndView addVirusConfirm(@Valid @ModelAttribute("virusBindingModel") VirusBindingModel virusBindingModel,
+                                        BindingResult bindingResult, ModelAndView modelAndView) {
         if (bindingResult.hasErrors()) {
             this.addObjectsInModelAndView(modelAndView);
 
             return super.view("viruses/add-virus", modelAndView);
         }
 
-        this.virusService.importVirus(virusDto);
+        this.virusService.importVirus(virusBindingModel);
 
         return super.redirect("/");
     }
 
     @GetMapping("")
+    @PreAuthorize("hasAuthority('USER')")
     public ModelAndView showViruses(ModelAndView modelAndView) {
         modelAndView.addObject("viruses", this.virusService.extractAllViruses());
 
@@ -63,19 +64,18 @@ public class VirusController extends BaseController {
     }
 
     @GetMapping("/delete/{id}")
-    @PreAuthenticate(loggedIn = true, inRole = "ADMIN")
+    @PreAuthorize("hasAuthority('MODERATOR')")
     public ModelAndView deleteVirus(@PathVariable("id") String id, ModelAndView modelAndView) {
-        VirusDto virusDto = this.virusService.extractVirusById(id);
-        List<Long> capitalIds = virusDto.getCapitals().stream().map(CapitalDto::getId).collect(Collectors.toList());
-        virusDto.setCapitalIds(capitalIds);
-        modelAndView.addObject("virusDto", virusDto);
+        VirusBindingModel virus = this.virusService.extractVirusByIdForEditOrDelete(id);
+        modelAndView.addObject("virusBindingModel", virus);
+
         this.addObjectsInModelAndView(modelAndView);
 
         return super.view("viruses/delete-virus", modelAndView);
     }
 
     @PostMapping("/delete/{id}")
-    @PreAuthenticate(loggedIn = true, inRole = "ADMIN")
+    @PreAuthorize("hasAuthority('MODERATOR')")
     public ModelAndView deleteVirusConfirm(@PathVariable("id") String id) {
         this.virusService.removeVirusById(id);
 
@@ -83,27 +83,28 @@ public class VirusController extends BaseController {
     }
 
     @GetMapping("/edit/{id}")
-    @PreAuthenticate(loggedIn = true, inRole = "ADMIN")
+    @PreAuthorize("hasAuthority('MODERATOR')")
     public ModelAndView editVirus(@PathVariable("id") String id, ModelAndView modelAndView) {
-        VirusDto virusDto = this.virusService.extractVirusById(id);
-        List<Long> capitalIds = virusDto.getCapitals().stream().map(CapitalDto::getId).collect(Collectors.toList());
-        virusDto.setCapitalIds(capitalIds);
-        modelAndView.addObject("virusDto", virusDto);
+        VirusBindingModel virus = this.virusService.extractVirusByIdForEditOrDelete(id);
+        modelAndView.addObject("virusBindingModel", virus);
+
         this.addObjectsInModelAndView(modelAndView);
 
         return super.view("viruses/edit-virus", modelAndView);
     }
 
     @PostMapping("/edit/{id}")
-    @PreAuthenticate(loggedIn = true, inRole = "ADMIN")
-    public ModelAndView editVirusConfirm(@PathVariable("id") String id, @Valid @ModelAttribute("virusDto") VirusDto virusDto, BindingResult bindingResult, ModelAndView modelAndView) {
+    @PreAuthorize("hasAuthority('MODERATOR')")
+    public ModelAndView editVirusConfirm(@PathVariable("id") String id,
+                                         @Valid @ModelAttribute("virusBindingModel") VirusBindingModel virusBindingModel,
+                                         BindingResult bindingResult, ModelAndView modelAndView) {
         if (bindingResult.hasErrors()) {
             this.addObjectsInModelAndView(modelAndView);
 
             return super.view("viruses/edit-virus", modelAndView);
         }
 
-        this.virusService.importVirus(virusDto);
+        this.virusService.importVirus(virusBindingModel);
 
         return super.redirect("/");
     }
@@ -111,6 +112,6 @@ public class VirusController extends BaseController {
     private void addObjectsInModelAndView(ModelAndView modelAndView) {
         modelAndView.addObject("mutations", Mutation.values());
         modelAndView.addObject("magnitudes", Magnitude.values());
-        modelAndView.addObject("capitals", this.capitalService.extractAllCapitals().stream().sorted(Comparator.comparing(CapitalDto::getName)).collect(Collectors.toList()));
+        modelAndView.addObject("capitals", this.capitalService.extractAllCapitals().stream().sorted(Comparator.comparing(CapitalViewModel::getName)).collect(Collectors.toList()));
     }
 }

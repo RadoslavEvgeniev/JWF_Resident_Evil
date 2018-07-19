@@ -1,26 +1,13 @@
-package residentevil.dtos;
+package residentevil.models.binding;
 
-import residentevil.entities.enums.UserRole;
+public class UserRegisterBindingModel {
 
-public class UserDto {
-
-    private String id;
     private String username;
-    private String password;
     private String email;
-    private UserRole role;
-
+    private String password;
     private String confirmPassword;
 
-    public UserDto() {
-    }
-
-    public String getId() {
-        return this.id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public UserRegisterBindingModel() {
     }
 
     public String getUsername() {
@@ -31,14 +18,6 @@ public class UserDto {
         this.username = username;
     }
 
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getEmail() {
         return this.email;
     }
@@ -47,12 +26,12 @@ public class UserDto {
         this.email = email;
     }
 
-    public UserRole getRole() {
-        return this.role;
+    public String getPassword() {
+        return this.password;
     }
 
-    public void setRole(UserRole role) {
-        this.role = role;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getConfirmPassword() {

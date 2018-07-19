@@ -1,6 +1,7 @@
 package residentevil.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ public class MapController extends BaseController {
     }
 
     @GetMapping("")
+    @PreAuthorize("hasAuthority('USER')")
     public ModelAndView getMapPage(ModelAndView modelAndView) {
         String geoJson = this.virusService.extractVirusesAsJson();
         modelAndView.addObject("geoJson", geoJson);

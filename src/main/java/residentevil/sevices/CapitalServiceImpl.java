@@ -3,8 +3,8 @@ package residentevil.sevices;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import residentevil.dtos.CapitalDto;
 import residentevil.entities.Capital;
+import residentevil.models.view.CapitalViewModel;
 import residentevil.repositories.CapitalRepository;
 
 import java.util.ArrayList;
@@ -23,16 +23,16 @@ public class CapitalServiceImpl implements CapitalService {
     }
 
     @Override
-    public List<CapitalDto> extractAllCapitals() {
+    public List<CapitalViewModel> extractAllCapitals() {
         List<Capital> capitalsFromDb = this.capitalRepository.findAll();
-        List<CapitalDto> capitalDtos = new ArrayList<>();
+        List<CapitalViewModel> capitalViewModels = new ArrayList<>();
 
         for (Capital capital : capitalsFromDb) {
-            CapitalDto capitalDto = this.modelMapper.map(capital, CapitalDto.class);
+            CapitalViewModel capitalViewModel = this.modelMapper.map(capital, CapitalViewModel.class);
 
-            capitalDtos.add(capitalDto);
+            capitalViewModels.add(capitalViewModel);
         }
 
-        return capitalDtos;
+        return capitalViewModels;
     }
 }

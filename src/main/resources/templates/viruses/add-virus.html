@@ -1,8 +1,8 @@
-<th:block th:include="~{fragments/navbar-admin}"></th:block>
+<th:block th:include="~{fragments/navbar}"></th:block>
 <div class="jumbotron col-sm-11 m-auto">
     <h1>Spread a New Virus!</h1>
     <hr/>
-    <form th:action="@{/viruses/add}" method="post" th:object="${virusDto}">
+    <form th:action="@{/viruses/add}" method="post" th:object="${virusBindingModel}">
         <th:block th:include="~{fragments/virus-form}"></th:block>
     </form>
     <script>

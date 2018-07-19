@@ -1,6 +1,5 @@
-package residentevil.dtos;
+package residentevil.models.binding;
 
-import com.google.gson.annotations.Expose;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 import residentevil.common.annotations.DateBeforeToday;
@@ -10,41 +9,24 @@ import residentevil.entities.enums.Mutation;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
-public class VirusDto {
+public class VirusBindingModel {
 
-    @Expose
     private String id;
-    @Expose
     private String name;
-    @Expose
     private String description;
-    @Expose
     private String sideEffects;
-    @Expose
     private String creator;
-    @Expose
     private boolean isDeadly;
-    @Expose
     private boolean isCurable;
-    @Expose
     private Mutation mutation;
-    @Expose
     private Integer turnoverRate;
-    @Expose
     private Integer hoursUntilTurn;
-    @Expose
     private Magnitude magnitude;
-    @Expose
     private LocalDate releasedOn;
-    @Expose
-    private Set<CapitalDto> capitals;
-
     private List<Long> capitalIds;
 
-    public VirusDto() {
-
+    public VirusBindingModel() {
     }
 
     public String getId() {
@@ -159,14 +141,6 @@ public class VirusDto {
 
     public void setReleasedOn(LocalDate releasedOn) {
         this.releasedOn = releasedOn;
-    }
-
-    public Set<CapitalDto> getCapitals() {
-        return this.capitals;
-    }
-
-    public void setCapitals(Set<CapitalDto> capitals) {
-        this.capitals = capitals;
     }
 
     @NotNull(message = "You must select capitals")
